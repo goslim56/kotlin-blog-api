@@ -1,8 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.0.4"
-    id("io.spring.dependency-management") version "1.1.0"
+//    id("org.springframework.boot") version "3.0.4"
+//    id("io.spring.dependency-management") version "1.1.0"
+
+    id("org.springframework.boot") version "2.6.3"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.jetbrains.kotlin.plugin.noarg") version "1.6.10"
+
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
@@ -22,6 +27,19 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+    implementation("org.apache.httpcomponents:httpclient")
+
+    // validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    // swagger
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
+
+    // Log
+    implementation("io.github.microutils:kotlin-logging:3.0.5")
+    runtimeOnly("io.github.microutils:kotlin-logging-jvm:3.0.5")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
