@@ -1,4 +1,14 @@
+server:
+  port: 8080
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres # 사무실 david 컴퓨터
+    password: 1q2w3e4r
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true

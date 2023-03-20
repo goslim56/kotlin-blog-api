@@ -40,9 +40,16 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:3.0.5")
     runtimeOnly("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
+    runtimeOnly("org.postgresql:postgresql")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
 }
 
 tasks.withType<KotlinCompile> {
