@@ -11,11 +11,11 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 data class RequestBlogDTO(
-    @ApiModelProperty(value = "검색어", required = false, example = "110-123-567890")
+    @ApiModelProperty(value = "검색어", required = false, example = "맛집")
     @field:NotNull(message = "검색어(keyword)는 필수입니다")
     val keyword: String? = null,
 
-    @ApiModelProperty(value = "정렬", required = false, example = "110-123-567890")
+    @ApiModelProperty(value = "정렬", required = false, example = "ACCURACY")
 //    @field:NotBlank(message = "{}")
     val sort: SortType? = null,
 
