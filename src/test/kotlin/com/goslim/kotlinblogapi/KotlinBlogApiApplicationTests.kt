@@ -40,6 +40,36 @@ class KotlinBlogApiApplicationTests(
         assertTrue(responseBlogPopularKeywordDTO.data[1].count >= 4)
     }
 
+    @Test
+    fun `블로그 인기 검색어  조회 API 최대 개수 테스트`() {
+        mockMvc.perform(get("/blogs").param("keyword", "맛집"))
+        mockMvc.perform(get("/blogs").param("keyword", "카페"))
+        mockMvc.perform(get("/blogs").param("keyword", "개발자"))
+        mockMvc.perform(get("/blogs").param("keyword", "컴퓨터"))
+        mockMvc.perform(get("/blogs").param("keyword", "바디로션"))
+        mockMvc.perform(get("/blogs").param("keyword", "식이섬유"))
+        mockMvc.perform(get("/blogs").param("keyword", "마스크"))
+        mockMvc.perform(get("/blogs").param("keyword", "텀블러"))
+        mockMvc.perform(get("/blogs").param("keyword", "비타민"))
+        mockMvc.perform(get("/blogs").param("keyword", "오메가3"))
+        mockMvc.perform(get("/blogs").param("keyword", "애플페이"))
+        mockMvc.perform(get("/blogs").param("keyword", "스프링"))
+        mockMvc.perform(get("/blogs").param("keyword", "역삼역"))
+        mockMvc.perform(get("/blogs").param("keyword", "강남역"))
+        mockMvc.perform(get("/blogs").param("keyword", "교대역"))
+        mockMvc.perform(get("/blogs").param("keyword", "서초역"))
+        mockMvc.perform(get("/blogs").param("keyword", "방배역"))
+        mockMvc.perform(get("/blogs").param("keyword", "사당역"))
+        mockMvc.perform(get("/blogs").param("keyword", "낙성대역"))
+        mockMvc.perform(get("/blogs").param("keyword", "서울대입구역"))
+        mockMvc.perform(get("/blogs").param("keyword", "봉천역"))
+        mockMvc.perform(get("/blogs").param("keyword", "신림역"))
+        mockMvc.perform(get("/blogs").param("keyword", "신대방역"))
+        mockMvc.perform(get("/blogs").param("keyword", "구로디지털단지역"))
+        val responseBlogPopularKeywordDTO = blogService.getPopularBlogKeyword()
+        assertTrue(responseBlogPopularKeywordDTO.data.size == 10)
+    }
+
 
     @Test
     fun `블로그 조회 API 테스트`() {
