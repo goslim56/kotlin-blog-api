@@ -40,6 +40,9 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:3.0.5")
     runtimeOnly("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
+    // Cache
+    implementation("org.springframework.boot:spring-boot-starter-cache:3.0.2")
+
     testImplementation("io.kotest:kotest-runner-junit5-jvm:5.4.2")
     testImplementation("io.kotest:kotest-assertions-core:5.4.2")
 

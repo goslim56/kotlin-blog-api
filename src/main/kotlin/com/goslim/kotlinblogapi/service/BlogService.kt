@@ -6,6 +6,7 @@ import com.goslim.kotlinblogapi.dto.RequestBlogDTO
 import com.goslim.kotlinblogapi.dto.ResponseBlogDTO
 import com.goslim.kotlinblogapi.dto.ResponseBlogPopularKeywordDTO
 import com.goslim.kotlinblogapi.dto.ResponseBlogPopularKeywordDTO.SearchDTO
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,6 +15,7 @@ class BlogService(
     private val naverBlogComponent: NaverBlogComponent,
     private val searchService: SearchService,
 ) {
+    @Cacheable("blogs")
     fun getBlogs(requestBlogDTO: RequestBlogDTO):ResponseBlogDTO {
         return runCatching {
             kakaoBlogComponent.searchBlogs(requestBlogDTO)
