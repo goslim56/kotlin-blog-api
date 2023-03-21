@@ -14,7 +14,7 @@ class SearchService(
 
     private var searchCountMap = ConcurrentHashMap<String, Long>()
     private var searchCountUpCallCount: AtomicInteger = AtomicInteger(0)
-    private val syncCount =  2 // 테스트를 위해 낮은숫자로 설정
+    private val syncCount =  0 // 테스트를 위해 낮은숫자로 설정, 트래픽 양에 따라 값을 증가
 
     fun searchCountUp(keyword: String) {
         searchCountMap[keyword]?.run { searchCountMap.put(keyword, this.plus(1)) } ?: searchCountMap.put(keyword, 1)
@@ -28,6 +28,7 @@ class SearchService(
     @Transactional
     fun syncSearchCount() {
         if (searchCountUpCallCount.getAndIncrement() < syncCount) return
+        searchCountUpCallCount = AtomicInteger(0)
         val searches = searchRepository.findAllByKeywordIn(searchCountMap.keys().toList())
 
         for ((keyword, count) in searchCountMap) {
@@ -36,6 +37,6 @@ class SearchService(
             }?.apply { this.count += count } ?: Search(keyword = keyword, count = count))
         }
         searchCountMap = ConcurrentHashMap<String, Long>()
-        searchCountUpCallCount = AtomicInteger(0)
+
     }
 }
