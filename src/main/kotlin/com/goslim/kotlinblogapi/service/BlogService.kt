@@ -19,9 +19,7 @@ class BlogService(
     fun getBlogs(requestBlogDTO: RequestBlogDTO):ResponseBlogDTO {
         return runCatching {
             kakaoBlogComponent.searchBlogs(requestBlogDTO)
-        }.getOrElse {naverBlogComponent.searchBlogs(requestBlogDTO) }.also {
-            searchService.searchCountUp(requestBlogDTO.keyword!!)
-        }
+        }.getOrElse {naverBlogComponent.searchBlogs(requestBlogDTO) }
     }
 
     fun getPopularBlogKeyword(): ResponseBlogPopularKeywordDTO {

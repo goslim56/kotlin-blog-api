@@ -4,6 +4,7 @@ import com.goslim.kotlinblogapi.dto.RequestBlogDTO
 import com.goslim.kotlinblogapi.dto.ResponseBlogDTO
 import com.goslim.kotlinblogapi.dto.ResponseBlogPopularKeywordDTO
 import com.goslim.kotlinblogapi.service.BlogService
+import com.goslim.kotlinblogapi.service.SearchService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiImplicitParams
@@ -21,11 +22,13 @@ import javax.validation.Valid
 @RestController
 class BlogController(
     private val blogService: BlogService,
+    private val searchService: SearchService,
 ) {
 
     @GetMapping
     @ApiOperation(value = "블로그 목록 조회")
     fun getBlogs(@Valid requestBlogDTO: RequestBlogDTO): ResponseEntity<ResponseBlogDTO> {
+        searchService.searchCountUp(requestBlogDTO.keyword!!)
         return ResponseEntity(blogService.getBlogs(requestBlogDTO), HttpStatus.OK)
     }
 

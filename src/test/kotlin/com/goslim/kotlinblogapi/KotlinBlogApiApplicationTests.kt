@@ -29,17 +29,15 @@ class KotlinBlogApiApplicationTests(
     @Test
     fun `블로그 인기 검색어  조회 API 테스트`() {
         for( i in 1..5) {
-            blogService.getBlogs(RequestBlogDTO(keyword = "맛집"))
+            mockMvc.perform(get("/blogs").param("keyword", "맛집"))
         }
         for( i in 1..4) {
-            blogService.getBlogs(RequestBlogDTO(keyword = "카페"))
+            mockMvc.perform(get("/blogs").param("keyword", "카페"))
         }
         val responseBlogPopularKeywordDTO = blogService.getPopularBlogKeyword()
-
         assertTrue(responseBlogPopularKeywordDTO.data.size >= 2)
         assertTrue(responseBlogPopularKeywordDTO.data[0].count >= 5)
         assertTrue(responseBlogPopularKeywordDTO.data[1].count >= 4)
-
     }
 
 
