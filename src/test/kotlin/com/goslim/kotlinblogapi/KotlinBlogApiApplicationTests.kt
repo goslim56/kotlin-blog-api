@@ -25,7 +25,6 @@ class KotlinBlogApiApplicationTests(
     @Autowired val naverBlogComponent: NaverBlogComponent
 ) {
 
-
     @Test
     fun `블로그 인기 검색어  조회 API 테스트`() {
         for( i in 1..5) {

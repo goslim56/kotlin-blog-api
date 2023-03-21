@@ -15,21 +15,16 @@ import org.springframework.web.client.RestTemplate
 class KakaoBlogComponent(
     private val restTemplate: RestTemplate,
 ) : BlogComponentInterface {
-    private val log = KotlinLogging.logger {}
+    private var requestEntity: HttpEntity<Void>? = null
     val domain = "https://dapi.kakao.com/v2/search/blog"
 
     override fun searchBlogs(requestBlogDTO: RequestBlogDTO): ResponseBlogDTO {
-        val headers = HttpHeaders()
-        headers.set("Authorization", "KakaoAK 0d96763cbd37ef027b9ab40a9aaa34e4")
-        val requestEntity: HttpEntity<Void> = HttpEntity(headers)
         val query = "?query=${requestBlogDTO.keyword}" +
                 (requestBlogDTO.sort?.run { "&sort=" + this.name.lowercase() } ?: "") +
                 "&page=${requestBlogDTO.page}" +
                 "&size=${requestBlogDTO.size}"
-        log.info { "query url: $domain$query " }
         val response =
-            restTemplate.exchange("$domain$query", HttpMethod.GET, requestEntity, ResponseKakaoBlogDTO::class.java)
-        log.info { "response:  ${response}" }
+            restTemplate.exchange("$domain$query", HttpMethod.GET, getRequestEntity(), ResponseKakaoBlogDTO::class.java)
         return response.body?.run {
             ResponseBlogDTO(
                 responseKakaoBlogDTO = this,
@@ -37,5 +32,14 @@ class KakaoBlogComponent(
                 size = requestBlogDTO.size
             )
         } ?: throw OpenApiResponseException("Kakao Blog API Response Body is null")
+    }
+
+    private fun getRequestEntity(): HttpEntity<Void> {
+        if (requestEntity == null) {
+            val headers = HttpHeaders()
+            headers.set("Authorization", "KakaoAK 0d96763cbd37ef027b9ab40a9aaa34e4")
+            requestEntity = HttpEntity(headers)
+        }
+        return requestEntity!!
     }
 }

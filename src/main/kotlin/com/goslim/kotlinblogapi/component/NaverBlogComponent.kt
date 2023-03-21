@@ -16,14 +16,10 @@ import org.springframework.web.client.RestTemplate
 class NaverBlogComponent(
     private val restTemplate: RestTemplate,
 ) : BlogComponentInterface {
-    private val log = KotlinLogging.logger {}
+    private var requestEntity: HttpEntity<Void>? = null
     val domain = "https://openapi.naver.com/v1/search/blog"
 
     override fun searchBlogs(requestBlogDTO: RequestBlogDTO): ResponseBlogDTO {
-        val headers = HttpHeaders()
-        headers.set("X-Naver-Client-Id", "rVcbGSjf4W9pvsp7sC7o")
-        headers.set("X-Naver-Client-Secret", "thHY_YtL78")
-        val requestEntity: HttpEntity<Void> = HttpEntity(headers)
         val query = "?query=${requestBlogDTO.keyword}" + (requestBlogDTO.sort?.run {
             "&sort=" + when (requestBlogDTO.sort) {
                 SortType.ACCURACY -> "sim"
@@ -33,12 +29,9 @@ class NaverBlogComponent(
                 "&start=${requestBlogDTO.page}" +
                 "&display=${requestBlogDTO.size}"
 
-        log.info { "query url: $domain$query " }
         val response =
-            restTemplate.exchange("$domain$query", HttpMethod.GET, requestEntity, ResponseNaverBlogDTO::class.java)
-        log.info { "response:  ${response}" }
+            restTemplate.exchange("$domain$query", HttpMethod.GET, getRequestEntity(), ResponseNaverBlogDTO::class.java)
         return response.body?.run {
-
             ResponseBlogDTO(
                 responseNaverBlogDTO = this,
                 page = requestBlogDTO.page,
@@ -46,5 +39,15 @@ class NaverBlogComponent(
             )
         }
             ?: throw OpenApiResponseException("Naver Blog API Response Body is null")
+    }
+
+    private fun getRequestEntity(): HttpEntity<Void> {
+        if (requestEntity == null) {
+            val headers = HttpHeaders()
+            headers.set("X-Naver-Client-Id", "rVcbGSjf4W9pvsp7sC7o")
+            headers.set("X-Naver-Client-Secret", "thHY_YtL78")
+            requestEntity = HttpEntity(headers)
+        }
+        return requestEntity!!
     }
 }
