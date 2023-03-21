@@ -4,8 +4,7 @@ import com.goslim.kotlinblogapi.component.KakaoBlogComponent
 import com.goslim.kotlinblogapi.component.NaverBlogComponent
 import com.goslim.kotlinblogapi.dto.RequestBlogDTO
 import com.goslim.kotlinblogapi.service.BlogService
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -25,6 +24,24 @@ class KotlinBlogApiApplicationTests(
     @Autowired val kakaoBlogComponent: KakaoBlogComponent,
     @Autowired val naverBlogComponent: NaverBlogComponent
 ) {
+
+
+    @Test
+    fun `블로그 인기 검색어  조회 API 테스트`() {
+        for( i in 1..5) {
+            blogService.getBlogs(RequestBlogDTO(keyword = "맛집"))
+        }
+        for( i in 1..4) {
+            blogService.getBlogs(RequestBlogDTO(keyword = "카페"))
+        }
+        val responseBlogPopularKeywordDTO = blogService.getPopularBlogKeyword()
+
+        assertTrue(responseBlogPopularKeywordDTO.data.size >= 2)
+        assertTrue(responseBlogPopularKeywordDTO.data[0].count >= 5)
+        assertTrue(responseBlogPopularKeywordDTO.data[1].count >= 4)
+
+    }
+
 
     @Test
     fun `블로그 조회 API 테스트`() {
